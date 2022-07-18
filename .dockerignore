@@ -1,1 +1,12 @@
 venv
+.git
+.python-version
+README.md
+Dockerfile
+README.md
+__pycache__
+broken.Dockerfile
+complete.Dockerfile
+wrong_order.Dockerfile
+.gitignore
+.vscode
