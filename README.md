@@ -1,13 +1,47 @@
-Docker demo
 
-Created to demo Dockerfiles
- - How to create a Dockerfile
- - How to create an image from a Dockerflle
- - How to create a Docker container
+
+# Docker demo
+
+Table of Contents
+=================
+  - [How to run the project](#how-to-run-the-project)
+    * [Create the virtual environment](#create-the-virtual-environment)
+    * [Activate the virtual environment](#activate-the-virtual-environment)
+    * [Deactivate the virtual environment](#deactivate-the-virtual-environment)
+  - [How to build a Docker image: `docker build -t name_of_image:version .`](#how-to-build-a-docker-image-docker-build--t-name_of_imageversion-)
+  - [How to create a Docker container from a docker image](#how-to-create-a-docker-container-from-a-docker-image)
+  - [Demo of Common errors with creating Docker files](#demo-of-common-errors-with-creating-docker-files)
+    - [Always specify the base image version tag instead of latest.](#always-specify-the-base-image-version-tag-instead-of-latest)
+    - [Order of Docker instructions matters](#order-of-docker-instructions-matters)
+    - [Impact of  a  `.dockerignore`  file](#impact-of--a--dockerignore--file)
 
 ## How to run the project
 
-- Create  and activate a  virtual environment
+ 1. ### Create the virtual environment
+
+   ```bash
+   python -m venv venv
+   ```
+
+1. ### Activate the virtual environment
+
+   - for windows
+
+   ```bash
+   venv\Scripts\activate
+   ```
+
+   - for Linux / macOS
+
+   ```bash
+   source venv/bin/activate
+   ```
+
+2. ### Deactivate the virtual environment
+
+   ```bash
+   deactivate
+   ```
 
 - Install project dependencies
 
@@ -15,10 +49,6 @@ Created to demo Dockerfiles
   ```bash
   python -m app.py
   ```
-
-  
-
-
 
 ## How to build a Docker image: `docker build -t name_of_image:version .`
 
@@ -71,3 +101,27 @@ docker build -t build_failed_wrong_order -f wrong_order.Dockerfile .
 ```
 
 > **Lesson learnt:** Always ensure that you declare the docker instructions in the right order.
+
+### Impact of  a  `.dockerignore`  file
+Create a virtual environment and install project requirements
+Build the project again
+```bash 
+docker build -t HelloWorld:1.0  -f complete.Dockerfile .
+```
+Take note of the size of  build context and the final image
+Delete the `.dockerignore` file and build the project again
+
+```bash 
+docker build -t HelloWorld:1.1  -f complete.Dockerfile .
+```
+Take note of the size of the build context and the final image
+Run `docker images`
+Compare size of image `HelloWorld:1.0` with `HelloWorld:1.1`
+
+`HelloWorld:1.1`  had  a bigger build context and also larger image size than `HelloWorld:1.0`
+
+> **Lesson learnt:** The `.dockerignore` file helps us exclude unwanted files from the build context and as a result we are going to have a smaller build context (the set of files located in the specified PATH or URL)
+reusulting and smaller image size as well since  the `COPY` instruction will have a much smaller scoped reference to a file in the context.
+
+> This makes a difference if you are copying all files like it is with the `complete.Dockerfile` whereas with the simple `Dockerfile` provided in the repo where you specify individual files to copy, only the build context will be affected but the image size will not change since there's no avenue for copying any unnecessary files.
+Bigger projects usually have many files and copying them one by one is against the convention and would result in more layers. Remember every instruction in a `dockerfile` is a layer.
