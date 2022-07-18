@@ -50,11 +50,14 @@ Table of Contents
   python -m app.py
   ```
 
-## How to build a Docker image: `docker build -t name_of_image:version .`
+## How to build a Docker image: `docker build -t name_of_image:version -f name_of_dockerfile .`
 
 ```bash
 docker build -t hello_world:1.0 .
 ```
+
+You can leave out the `-f` flag if your docker file is so named `Dockerfile` and is in the current 
+
 or 
 
 ```bash
