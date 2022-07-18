@@ -106,18 +106,17 @@ docker build -t build_failed_wrong_order -f wrong_order.Dockerfile .
 > **Lesson learnt:** Always ensure that you declare the docker instructions in the right order.
 
 ### Impact of  a  `.dockerignore`  file
-Create a virtual environment and install project requirements
 Build the project again
 ```bash 
 docker build -t HelloWorld:1.0  -f complete.Dockerfile .
 ```
-Take note of the size of  build context and the final image
+**Take note of the size of  build context and the final image**
 Delete the `.dockerignore` file and build the project again
 
 ```bash 
 docker build -t HelloWorld:1.1  -f complete.Dockerfile .
 ```
-Take note of the size of the build context and the final image
+**Take note of the size of the build context and the final image**
 Run `docker images`
 Compare size of image `HelloWorld:1.0` with `HelloWorld:1.1`
 
